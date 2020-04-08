@@ -19,7 +19,6 @@ public class ParkingLot {
        maxCount = parkingList.size();
     }
 
-
     public String addCar(String carNumber) {
         int index;
         StringBuilder ticket = new StringBuilder();

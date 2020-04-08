@@ -1,0 +1,11 @@
+CREATE DATABASE parkinglot CHARSET utf8 COLLATE utf8_general_ci;
+
+CREATE TABLE a_parkinglot (
+    id INT NOT NULL,
+    carname VARCHAR(100)
+)CHARSET = utf8;
+
+CREATE TABLE b_parkinglot (
+    id INT NOT NULL,
+    carname VARCHAR(100)
+)CHARSET = utf8;
