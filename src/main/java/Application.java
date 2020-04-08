@@ -1,7 +1,14 @@
+import exception.InvalidTicketException;
+import exception.ParkingLotAllFullException;
+import exception.ParkingLotFullException;
+import parkinglot.ParkingLot;
+
 import java.util.Scanner;
 
 public class Application {
 
+  private static ParkingLot aParkingLot = new ParkingLot("a");
+  private static ParkingLot bParkingLot = new ParkingLot("b");
   public static void main(String[] args) {
     operateParking();
   }
@@ -42,15 +49,38 @@ public class Application {
   }
 
   public static void init(String initInfo) {
-
+    aParkingLot.setMaxCount(initInfo.trim().split(",")[0].split(":")[1]);
+    aParkingLot.setParkingList();
+    bParkingLot.setMaxCount(initInfo.trim().split(",")[0].split(":")[1]);
+    bParkingLot.setParkingList();
   }
 
   public static String park(String carNumber) {
-    return "";
+    String ticket = "";
+    try {
+      ticket = aParkingLot.addCar(carNumber);
+    } catch (ParkingLotFullException e) {
+      try {
+        ticket = bParkingLot.addCar(carNumber);
+      } catch (ParkingLotFullException e1) {
+        throw new ParkingLotAllFullException("非常抱歉，由于车位已满，暂时无法为您停车！");
+      }
+    }
+    return ticket;
   }
 
   public static String fetch(String ticket) {
-    return "";
+    String parkingLotNum = ticket.trim().split(",")[1];
+    StringBuilder carInfo = new StringBuilder();
+    carInfo.append(ticket.trim().split(",")[1] + ticket.trim().split(",")[2]);
+    if (parkingLotNum.equals("a")) {
+      return aParkingLot.getCar(carInfo.toString());
+    } else if (parkingLotNum.equals("b")) {
+      return bParkingLot.getCar(carInfo.toString());
+    } else {
+      throw new InvalidTicketException
+              ("很抱歉，无法通过您提供的停车券为您找到相应的车辆，请您再次核对停车券是否有效！ ");
+    }
   }
 
 }
