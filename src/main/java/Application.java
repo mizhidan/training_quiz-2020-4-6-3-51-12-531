@@ -1,14 +1,16 @@
+import Database.ParkingDAO;
 import exception.InvalidTicketException;
-import exception.ParkingLotAllFullException;
 import exception.ParkingLotFullException;
+import parkinglot.Parking;
 import parkinglot.ParkingLot;
 
 import java.util.Scanner;
 
 public class Application {
 
-  private static ParkingLot aParkingLot = new ParkingLot("a");
-  private static ParkingLot bParkingLot = new ParkingLot("b");
+  private static ParkingLot aParkingLot = new ParkingLot("A");
+  private static ParkingLot bParkingLot = new ParkingLot("B");
+  private static ParkingDAO parkingDAO = new ParkingDAO();
   public static void main(String[] args) {
     operateParking();
   }
@@ -19,6 +21,8 @@ public class Application {
       Scanner printItem = new Scanner(System.in);
       String choice = printItem.next();
       if (choice.equals("4")) {
+        aParkingLot.update();
+        bParkingLot.update();
         System.out.println("系统已退出");
         break;
       }
@@ -49,10 +53,8 @@ public class Application {
   }
 
   public static void init(String initInfo) {
-    aParkingLot.setMaxCount(initInfo.trim().split(",")[0].split(":")[1]);
-    aParkingLot.setParkingList();
-    bParkingLot.setMaxCount(initInfo.trim().split(",")[0].split(":")[1]);
-    bParkingLot.setParkingList();
+    aParkingLot.init(initInfo.trim().split(",")[0].split(":")[1]);
+    bParkingLot.init(initInfo.trim().split(",")[1].split(":")[1]);
   }
 
   public static String park(String carNumber) {
@@ -63,19 +65,19 @@ public class Application {
       try {
         ticket = bParkingLot.addCar(carNumber);
       } catch (ParkingLotFullException e1) {
-        throw new ParkingLotAllFullException("非常抱歉，由于车位已满，暂时无法为您停车！");
+        throw new ParkingLotFullException("非常抱歉，由于车位已满，暂时无法为您停车！");
       }
     }
     return ticket;
   }
 
   public static String fetch(String ticket) {
-    String parkingLotNum = ticket.trim().split(",")[1];
+    String parkingLotNum = ticket.trim().split(",")[0];
     StringBuilder carInfo = new StringBuilder();
-    carInfo.append(ticket.trim().split(",")[1] + ticket.trim().split(",")[2]);
-    if (parkingLotNum.equals("a")) {
+    carInfo.append(ticket.trim().split(",")[1] + "," + ticket.trim().split(",")[2]);
+    if (parkingLotNum.equals("A")) {
       return aParkingLot.getCar(carInfo.toString());
-    } else if (parkingLotNum.equals("b")) {
+    } else if (parkingLotNum.equals("B")) {
       return bParkingLot.getCar(carInfo.toString());
     } else {
       throw new InvalidTicketException

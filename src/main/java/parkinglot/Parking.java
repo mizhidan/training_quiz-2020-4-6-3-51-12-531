@@ -9,6 +9,9 @@ public class Parking {
         this.carNumber = carNumber;
     }
 
+    public Parking() {
+
+    }
 
     public int getId() {
         return id;
