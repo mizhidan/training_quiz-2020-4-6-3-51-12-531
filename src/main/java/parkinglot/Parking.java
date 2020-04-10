@@ -3,6 +3,7 @@ package parkinglot;
 public class Parking {
     private int id;
     private String carNumber;
+    private int parkingTime;
 
     public Parking(int id, String carNumber) {
         this.id = id;
@@ -27,5 +28,13 @@ public class Parking {
 
     public void setCarNumber(String carNumber) {
         this.carNumber = carNumber;
+    }
+
+    public int getParkingTime() {
+        return parkingTime;
+    }
+
+    public void setParkingTime(int parkingTime) {
+        this.parkingTime = parkingTime;
     }
 }
