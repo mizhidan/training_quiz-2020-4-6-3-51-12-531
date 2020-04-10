@@ -94,11 +94,16 @@ public class ParkingLot {
         setMaxCount(parkingList.size());
     }
 
-//    public int calcLastCapacity() {
-//        int
-//        for()
-//        return (maxCount - parkingList.size());
-//    }
+    public int calcLastCapacity() {
+        int index;
+        int notNullCount = 0;
+        for (index = 0; index < parkingList.size(); ++index) {
+            if (!parkingList.get(index).getCarNumber().equals("''")) {
+                ++notNullCount;
+            }
+        }
+        return (maxCount - notNullCount);
+    }
 
     public void update() {
         ParkingDAO parkingDAO = new ParkingDAO();
